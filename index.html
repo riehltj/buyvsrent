@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy vs Rent Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Buy vs Rent Calculator</h1>
+    <p class="subtitle">Compare the true cost of buying a home versus renting over time</p>
+
+    <div class="grid">
+      <!-- General Settings -->
+      <div class="card shared">
+        <h2>⚙️ General Settings</h2>
+
+        <div class="field">
+          <label>Time Horizon <span class="val" id="v-years"></span></label>
+          <input type="range" id="years" min="1" max="30" value="10" step="1">
+        </div>
+        <div class="field">
+          <label>Investment Return Rate <span class="val" id="v-invest"></span></label>
+          <input type="range" id="invest" min="0" max="15" value="7" step="0.5">
+        </div>
+        <div class="field">
+          <label>Home Appreciation Rate <span class="val" id="v-appreciate"></span></label>
+          <input type="range" id="appreciate" min="0" max="10" value="3" step="0.25">
+        </div>
+        <div class="field">
+          <label>Annual Rent Increase <span class="val" id="v-rentincrease"></span></label>
+          <input type="range" id="rentincrease" min="0" max="10" value="2.5" step="0.25">
+        </div>
+        <div class="field">
+          <label>Inflation Rate <span class="val" id="v-inflation"></span></label>
+          <input type="range" id="inflation" min="0" max="8" value="3" step="0.25">
+        </div>
+        <div class="field">
+          <label>Property Tax Growth <span class="val" id="v-proptaxgrowth"></span></label>
+          <input type="range" id="proptaxgrowth" min="0" max="5" value="2" step="0.25">
+        </div>
+      </div>
+
+      <!-- Renting -->
+      <div class="card rent">
+        <h2>🏠 Renting</h2>
+
+        <div class="field">
+          <label>Monthly Rent <span class="val" id="v-rent"></span></label>
+          <input type="range" id="rent" min="500" max="10000" value="2000" step="50">
+        </div>
+        <div class="field">
+          <label>Renter's Insurance (monthly) <span class="val" id="v-renterins"></span></label>
+          <input type="range" id="renterins" min="0" max="100" value="15" step="5">
+        </div>
+        <div class="field">
+          <label>Security Deposit <span class="val" id="v-deposit"></span></label>
+          <input type="range" id="deposit" min="0" max="6" value="2" step="1">
+          <small style="color:#718096;font-size:0.75rem;">months of rent</small>
+        </div>
+      </div>
+
+      <!-- Buying -->
+      <div class="card buy">
+        <h2>🏡 Buying</h2>
+
+        <div class="field">
+          <label>Home Price <span class="val" id="v-price"></span></label>
+          <input type="range" id="price" min="100000" max="2000000" value="500000" step="5000">
+        </div>
+        <div class="field">
+          <label>Down Payment <span class="val" id="v-down"></span></label>
+          <input type="range" id="down" min="3" max="50" value="20" step="1">
+          <div class="pmi-note" id="pmi-note">PMI applies — down payment is below 20%</div>
+        </div>
+        <div class="field">
+          <label>Mortgage Rate <span class="val" id="v-rate"></span></label>
+          <input type="range" id="rate" min="2" max="12" value="6.8" step="0.1">
+        </div>
+        <div class="field">
+          <label>Loan Term <span class="val" id="v-term"></span></label>
+          <input type="range" id="term" min="10" max="30" value="30" step="5">
+        </div>
+        <div class="field">
+          <label>PMI Rate (if &lt;20% down) <span class="val" id="v-pmi"></span></label>
+          <input type="range" id="pmi" min="0" max="2" value="0.85" step="0.05">
+        </div>
+      </div>
+
+      <!-- Buying Costs -->
+      <div class="card buy">
+        <h2>💰 Buying Costs</h2>
+
+        <div class="field">
+          <label>Property Tax Rate (annual) <span class="val" id="v-tax"></span></label>
+          <input type="range" id="tax" min="0" max="3" value="1.1" step="0.05">
+        </div>
+        <div class="field">
+          <label>Home Insurance (monthly) <span class="val" id="v-homeins"></span></label>
+          <input type="range" id="homeins" min="0" max="500" value="150" step="10">
+        </div>
+        <div class="field">
+          <label>HOA Fees (monthly) <span class="val" id="v-hoa"></span></label>
+          <input type="range" id="hoa" min="0" max="1000" value="0" step="25">
+        </div>
+        <div class="field">
+          <label>Maintenance (% of home/yr) <span class="val" id="v-maintenance"></span></label>
+          <input type="range" id="maintenance" min="0" max="3" value="1" step="0.1">
+        </div>
+        <div class="field">
+          <label>Closing Costs (% of price) <span class="val" id="v-closing"></span></label>
+          <input type="range" id="closing" min="1" max="6" value="3" step="0.25">
+        </div>
+        <div class="field">
+          <label>Selling Costs (% of sale price) <span class="val" id="v-selling"></span></label>
+          <input type="range" id="selling" min="0" max="10" value="5.5" step="0.25">
+        </div>
+      </div>
+
+      <!-- Tax Settings (full width) -->
+      <div class="card tax full-width">
+        <h2>🧾 Tax Settings</h2>
+        <div class="inner-grid">
+          <div>
+            <div class="field">
+              <label>Marginal Income Tax Rate <span class="val" id="v-marginalrate"></span></label>
+              <input type="range" id="marginalrate" min="0" max="50" value="22" step="1">
+            </div>
+            <div class="field">
+              <label>Long-term Capital Gains Rate <span class="val" id="v-capgains"></span></label>
+              <input type="range" id="capgains" min="0" max="25" value="15" step="1">
+            </div>
+          </div>
+          <div>
+            <div class="field">
+              <div class="toggle-label">Filing Status</div>
+              <div class="toggle-group">
+                <button class="toggle-btn active" id="btn-single" onclick="setFiling('single')">Single ($250k exclusion)</button>
+                <button class="toggle-btn" id="btn-married" onclick="setFiling('married')">Married ($500k exclusion)</button>
+              </div>
+            </div>
+            <div class="field" style="margin-top:1rem;">
+              <div class="toggle-label">Itemize Deductions?</div>
+              <div class="toggle-group">
+                <button class="toggle-btn" id="btn-itemize-yes" onclick="setItemize(true)">Yes — deduct mortgage interest</button>
+                <button class="toggle-btn active" id="btn-itemize-no" onclick="setItemize(false)">No — standard deduction</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results">
+      <div class="results-header">
+        <h2>Results after <span id="res-years">10</span> years</h2>
+        <div class="mode-toggle">
+          <button class="toggle-btn active" id="btn-nominal" onclick="setRealMode(false)">Nominal $</button>
+          <button class="toggle-btn" id="btn-real" onclick="setRealMode(true)">Real $ (today's dollars)</button>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict"></div>
+
+      <div class="metrics">
+        <div class="metric buy">
+          <div class="label">Monthly Mortgage (P+I)</div>
+          <div class="amount" id="res-mortgage">—</div>
+        </div>
+        <div class="metric buy">
+          <div class="label">Net Cost to Buy</div>
+          <div class="amount" id="res-buy-net">—</div>
+        </div>
+        <div class="metric rent">
+          <div class="label">Net Cost to Rent</div>
+          <div class="amount" id="res-rent-net">—</div>
+        </div>
+        <div class="metric buy">
+          <div class="label">Home Equity (after sale costs)</div>
+          <div class="amount" id="res-equity">—</div>
+        </div>
+        <div class="metric">
+          <div class="label">Break-Even Point</div>
+          <div class="amount" id="res-breakeven">—</div>
+        </div>
+        <div class="metric rent">
+          <div class="label">Renter Investment Value</div>
+          <div class="amount" id="res-invest-val">—</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Breakdown -->
+    <div class="breakdown">
+      <h2>Cost Breakdown</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Buying</th>
+            <th>Renting</th>
+          </tr>
+        </thead>
+        <tbody id="breakdown-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="calculator.js"></script>
+</body>
+</html>
